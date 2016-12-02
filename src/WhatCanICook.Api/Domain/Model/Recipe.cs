@@ -12,6 +12,7 @@ namespace WhatCanICook.Api.Domain.Model
 
         }
 
-        public List<Ingredient> Ingredients { get; set; }
+        public string Name { get; set; }
+        public List<RecipeIngredient> Ingredients { get; set; }
     }
 }

@@ -7,5 +7,7 @@ namespace WhatCanICook.Api.Domain.Model
 {
     public class UnitOfMeasurement
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

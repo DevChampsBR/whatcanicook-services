@@ -7,7 +7,7 @@ namespace WhatCanICook.Api.Domain.Service.Contract.Dto
 {
     public class DtoWhatCanICookWithRequest
     {
-        
+       
     }
 
     public class DtoWhatCanICookWithResponse
