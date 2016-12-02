@@ -45,8 +45,8 @@ namespace WhatCanICook.Api.Domain.Service
                 new Ingredient() { Name = "água" },
                 new Ingredient() { Name = "Sal" },
                 new Ingredient() { Name = "Farinha" },
-                new Ingredient() { Name = "Ovo" },
-                new Ingredient() { Name = "X" },
+                new Ingredient() { Name = "carne" },
+                new Ingredient() { Name = "creme de leite" },
             };
 
 
@@ -60,14 +60,14 @@ namespace WhatCanICook.Api.Domain.Service
                     Video = "https://www.youtube.com/watch?v=5lbt9kDpDR4",
                     Ingredients = new List<RecipeIngredient>() {
                         new RecipeIngredient() {
-                            Ingredient = ingredients.FirstOrDefault(x=> x.Name == "água"),
+                            Ingredient = ingredients.FirstOrDefault(x=> x.Name.Equals("água", StringComparison.CurrentCultureIgnoreCase)),
                             Quantity = 3,
-                            Unit = units.FirstOrDefault(x=> x.Name == "copo")
+                            Unit = units.FirstOrDefault(x=> x.Name.Equals("copo", StringComparison.CurrentCultureIgnoreCase))
                         },
                         new RecipeIngredient() {
-                            Ingredient = ingredients.FirstOrDefault(x=> x.Name == "Sal"),
+                            Ingredient = ingredients.FirstOrDefault(x=> x.Name.Equals("Sal", StringComparison.CurrentCultureIgnoreCase)),
                             Quantity = 1,
-                            Unit = units.FirstOrDefault(x=> x.Name == "grama")
+                            Unit = units.FirstOrDefault(x=> x.Name.Equals("grama", StringComparison.CurrentCultureIgnoreCase))
                         }
                     },
                     Directions = new List<string>()
@@ -85,14 +85,14 @@ namespace WhatCanICook.Api.Domain.Service
                     Video = "https://www.youtube.com/watch?v=4wCQPFCvcq8",
                     Ingredients = new List<RecipeIngredient>() {
                         new RecipeIngredient() {
-                            Ingredient = ingredients.FirstOrDefault(x=> x.Name == "carne"),
+                            Ingredient = ingredients.FirstOrDefault(x=> x.Name.Equals("carne", StringComparison.CurrentCultureIgnoreCase)),
                             Quantity = 1000,
-                            Unit = units.FirstOrDefault(x=> x.Name == "grama")
+                            Unit = units.FirstOrDefault(x=> x.Name.Equals("grama", StringComparison.CurrentCultureIgnoreCase))
                         },
                         new RecipeIngredient() {
-                            Ingredient = ingredients.FirstOrDefault(x=> x.Name == "creme de leite"),
+                            Ingredient = ingredients.FirstOrDefault(x=> x.Name.Equals("creme de leite", StringComparison.CurrentCultureIgnoreCase)),
                             Quantity = 1,
-                            Unit = units.FirstOrDefault(x=> x.Name == "copo")
+                            Unit = units.FirstOrDefault(x=> x.Name.Equals("copo", StringComparison.CurrentCultureIgnoreCase))
                         }
                     },
                     Directions = new List<string>()
