@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WhatCanICook.Api.Core;
 using WhatCanICook.Api.Domain.Model;
 
 namespace WhatCanICook.Api.Dto
@@ -12,11 +13,13 @@ namespace WhatCanICook.Api.Dto
         {
             Ingredients = new List<string>();
         }
-
+        /// <summary>
+        /// List of available ingredients.
+        /// </summary>
         public List<string> Ingredients { get; set; }
     }
 
-    public class DtoWhatCanICookWithResponse
+    public class DtoWhatCanICookWithResponse : DtoResponseBase
     {
         public DtoWhatCanICookWithResponse()
         {
@@ -24,8 +27,14 @@ namespace WhatCanICook.Api.Dto
             InvalidIngredients = new List<string>();
         }
 
+        /// <summary>
+        /// Recipes according to provided ingredients 
+        /// </summary>
         public List<Recipe> Recipes { get; set; }
 
+        /// <summary>
+        /// Ingredients not found on database
+        /// </summary>
         public List<string> InvalidIngredients { get; set; }
     }
 }

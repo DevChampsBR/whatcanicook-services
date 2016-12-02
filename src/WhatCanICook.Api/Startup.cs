@@ -23,6 +23,11 @@ namespace WhatCanICook.Api
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            if (env.IsDevelopment())
+            {
+                //builder.AddUserSecrets();
+            }
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -39,8 +44,8 @@ namespace WhatCanICook.Api
                 options.SingleApiVersion(new Info
                 {
                     Version = "v1",
-                    Title = "Geo Search API",
-                    Description = "A simple api to search using geo location in Elasticsearch",
+                    Title = "What can I cook API",
+                    Description = "API that provide methods lorem ipsum lorem ipsum lorem ipsum",
                     TermsOfService = "None"
                 });
                 //options.IncludeXmlComments(pathToDoc);

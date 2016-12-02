@@ -6,6 +6,7 @@ using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 using WhatCanICook.Api.Dto;
 using WhatCanICook.Api.Domain.Model;
+using WhatCanICook.Api.Domain.Service;
 
 namespace WhatCanICook.Api.Controllers
 {
@@ -13,115 +14,37 @@ namespace WhatCanICook.Api.Controllers
     public class RecipeController : Controller
     {
 
-
         /// <summary>
-        /// Lorem Lorem ipsum Lorem ipsum Lorem ipsum ipsum
+        /// Method used to acquire Recipes that can be made according to available ingredients provided.
         /// </summary>
-        /// <param name="dto">Dto Lorem ipsum</param>
+        /// <param name="dto">Data transfer object</param>
         /// <returns>Lorem ipsum</returns>
         [HttpGet]
         public async Task<DtoWhatCanICookWithResponse> WhatCanICookWith([FromUri]DtoWhatCanICookWithRequest dto)
         {
             var response = new DtoWhatCanICookWithResponse();
-
-            #region Mock
-            var units = new List<UnitOfMeasurement>() {
-                new UnitOfMeasurement() {
-                    Name = "X"
-                },
-                new UnitOfMeasurement() {
-                    Name = "Y"
-                },
-                new UnitOfMeasurement() {
-                    Name = "Z"
-                }
-            };
-
-            var ingredients = new List<Ingredient>() {
-                new Ingredient() { Name = "A" },
-                new Ingredient() { Name = "B" },
-                new Ingredient() { Name = "C" },
-                new Ingredient() { Name = "D" },
-                new Ingredient() { Name = "E" },
-            };
-
-
-            var recipes = new List<Recipe>
-            {
-
-                new Recipe()
-                {
-                    Name = "ABC",
-                    Ingredients = new List<RecipeIngredient>() {
-                        new RecipeIngredient() {
-                            Ingredient = ingredients.FirstOrDefault(x=> x.Name == "A"),
-                            Quantity = 3,
-                            Unit = units.FirstOrDefault(x=> x.Name == "X")
-                        },
-                        new RecipeIngredient() {
-                            Ingredient = ingredients.FirstOrDefault(x=> x.Name == "B"),
-                            Quantity = 6,
-                            Unit = units.FirstOrDefault(x=> x.Name == "X")
-                        },
-                        new RecipeIngredient() {
-                            Ingredient = ingredients.FirstOrDefault(x=> x.Name == "C"),
-                            Quantity = 1,
-                            Unit = units.FirstOrDefault(x=> x.Name == "X")
-                        }
-                    }
-                },
-                new Recipe()
-                {
-                    Name = "AC",
-                    Ingredients = new List<RecipeIngredient>() {
-                        new RecipeIngredient() {
-                            Ingredient = ingredients.FirstOrDefault(x=> x.Name == "A"),
-                            Quantity = 3,
-                            Unit = units.FirstOrDefault(x=> x.Name == "Y")
-                        },
-                        new RecipeIngredient() {
-                            Ingredient = ingredients.FirstOrDefault(x=> x.Name == "C"),
-                            Quantity = 1,
-                            Unit = units.FirstOrDefault(x=> x.Name == "Y")
-                        }
-                    }
-                },
-                new Recipe()
-                {
-                    Name = "CD",
-                    Ingredients = new List<RecipeIngredient>() {
-                        new RecipeIngredient() {
-                            Ingredient = ingredients.FirstOrDefault(x=> x.Name == "C"),
-                            Quantity = 3,
-                            Unit = units.FirstOrDefault(x=> x.Name == "Y")
-                        },
-                        new RecipeIngredient() {
-                            Ingredient = ingredients.FirstOrDefault(x=> x.Name == "D"),
-                            Quantity = 1,
-                            Unit = units.FirstOrDefault(x=> x.Name == "Y")
-                        }
-                    }
-                }
-            };
-            #endregion
-
-            response.InvalidIngredients = dto.Ingredients
-                .Where(ingredient => !ingredients.Exists(y=> y.Name.Equals(ingredient)))
-                .ToList();
-
-            if (response.InvalidIngredients.Any())
+            if (dto == null)
             {
                 Response.StatusCode = 400;
                 return response;
             }
 
-            // query para parcial match
-            var query = recipes.AsQueryable();
-            query = query.Where(recipe =>
-                recipe.Ingredients.Exists(y =>
-                    dto.Ingredients.Exists(ingredient => ingredient.Equals(y.Ingredient.Name))));
+            var service = new RecipeService(); // todo: Ioc/DI/Abstract Factory
+            var whatCanICookWithResponse = await service.WhatCanICookWith(new Domain.Service.Contract.Dto.DtoWhatCanICookWithRequest()
+            {
+                Ingredients = dto.Ingredients
+            });
 
-            response.Recipes = query.ToList();
+            if (!whatCanICookWithResponse.Success)
+            {
+                response.InvalidIngredients = whatCanICookWithResponse.InvalidIngredients;
+                response.AddErrors(whatCanICookWithResponse.Errors);
+                Response.StatusCode = 400; // todo: check for specific error to specify specific httpcode
+            }
+            else
+            {
+                response.Recipes = whatCanICookWithResponse.Recipes;
+            }
 
             return response;
         }
